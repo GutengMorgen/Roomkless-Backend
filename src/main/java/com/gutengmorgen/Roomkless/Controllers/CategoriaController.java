@@ -5,6 +5,7 @@ import com.gutengmorgen.Roomkless.Entities.DtoCrearCategoria;
 import com.gutengmorgen.Roomkless.Entities.DtoModificarCategoria;
 import com.gutengmorgen.Roomkless.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,32 +20,30 @@ public class CategoriaController {
         this.repository = repository;
     }
 
-    @GetMapping(path = "/list")
-    public List<Categoria> getAllList(){
-        return repository.findAll();
-    }
-
     @GetMapping(path = "/count_items")
     public Long countAll(){
         return repository.count();
     }
 
+    @GetMapping(path = "/list")
+    public List<Categoria> getAllList(){
+        return repository.findAll();
+    }
 
     @PostMapping(path = "/create")
-    public String createCategory(@RequestBody @Valid DtoCrearCategoria parms){
-        repository.save(new Categoria(parms));
-        return "saved";
+    public Categoria createCategory(@RequestBody @Valid DtoCrearCategoria parms){
+        return repository.save(new Categoria(parms));
     }
 
     @PutMapping(path = "/{id}")
-    public String updateCategory(@PathVariable Long id, @RequestBody @Valid DtoModificarCategoria parms){
+    public ResponseEntity<Categoria> updateCategory(@PathVariable Long id, @RequestBody @Valid DtoModificarCategoria parms){
 
-        Categoria categoria = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("categoria no existe"));
+        Categoria categoria = repository.findById(id).orElse(null);
+        if(categoria == null) return ResponseEntity.notFound().build();
 
         categoria.actualizar(parms);
         repository.save(categoria);
 
-        return "updated";
+        return ResponseEntity.ok(categoria);
     }
 }
