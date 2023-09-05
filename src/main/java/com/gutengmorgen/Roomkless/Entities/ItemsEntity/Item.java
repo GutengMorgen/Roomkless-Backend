@@ -1,4 +1,4 @@
-package com.gutengmorgen.Roomkless.Entities.Item;
+package com.gutengmorgen.Roomkless.Entities.ItemsEntity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class Item {
     private String descripcion;
     private Boolean visibilidad;
     private String etiqueta;
-    private Long visitas;
+    private Long visitas = 0L;
     private Date ultima_visita;
     private Long categoria_id;
 
@@ -37,14 +37,28 @@ public class Item {
      this.descripcion = parms.descripcion();
      this.visibilidad = parms.visibilidad();
      this.etiqueta = parms.etiqueta();
+     this.ultima_visita = parms.ultima_visita();
+     this.categoria_id = parms.categoria_id();
     }
 
-    public Item(DtoModificarItem parms){
-        this.nombre = parms.nombre();
-        this.link = parms.link();
-        this.link_status = parms.link_status();
-        this.descripcion = parms.descripcion();
-        this.visibilidad = parms.visibilidad();
-        this.etiqueta = parms.etiqueta();
+    public void actualizar(DtoModificarItem parms){
+        if(parms.nombre() != null)
+            this.nombre = parms.nombre();
+        if(parms.link() != null)
+            this.link = parms.link();
+        if(parms.link_status() != null)
+            this.link_status = parms.link_status();
+        if(parms.descripcion() != null)
+            this.descripcion = parms.descripcion();
+        if(parms.visibilidad() != null)
+            this.visibilidad = parms.visibilidad();
+        if(parms.etiqueta() != null)
+            this.etiqueta = parms.etiqueta();
+        if(parms.visitas() != null)
+            this.visitas = parms.visitas();
+        if(parms.ultima_visita() != null)
+            this.ultima_visita = parms.ultima_visita();
+        if(parms.categoria_id() != null)
+            this.categoria_id = parms.categoria_id();
     }
 }

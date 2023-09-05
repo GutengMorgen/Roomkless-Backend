@@ -1,4 +1,4 @@
-package com.gutengmorgen.Roomkless.Entities.Categoria;
+package com.gutengmorgen.Roomkless.Entities.CategoriaEntity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

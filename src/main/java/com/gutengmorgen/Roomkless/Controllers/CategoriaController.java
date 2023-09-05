@@ -1,8 +1,8 @@
 package com.gutengmorgen.Roomkless.Controllers;
 
-import com.gutengmorgen.Roomkless.Entities.Categoria.Categoria;
-import com.gutengmorgen.Roomkless.Entities.Categoria.DtoCrearCategoria;
-import com.gutengmorgen.Roomkless.Entities.Categoria.DtoModificarCategoria;
+import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.Categoria;
+import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.DtoCrearCategoria;
+import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.DtoModificarCategoria;
 import com.gutengmorgen.Roomkless.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class CategoriaController {
         this.repository = repository;
     }
 
-    @GetMapping(path = "/count_items")
+    @GetMapping(path = "/count")
     public Long countAll(){
         return repository.count();
     }

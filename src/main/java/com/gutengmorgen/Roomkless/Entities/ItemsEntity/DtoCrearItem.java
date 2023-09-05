@@ -1,4 +1,4 @@
-package com.gutengmorgen.Roomkless.Entities.Item;
+package com.gutengmorgen.Roomkless.Entities.ItemsEntity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,4 +19,8 @@ public record DtoCrearItem(
         @NotNull
         Boolean visibilidad,
         @NotBlank
-        String etiqueta) { }
+        String etiqueta,
+        @NotNull
+        Date ultima_visita,
+        @NotNull
+        Long categoria_id) { }
