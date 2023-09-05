@@ -29,4 +29,13 @@ public class Categoria {
         this.nombre = parms.nombre();
         this.visibilidad = parms.visibilidad();
     }
+
+    public void actualizar(DtoModificarCategoria parms) {
+        if(parms.nombre() != null)
+            this.nombre = parms.nombre();
+        if(parms.visibilidad() != null)
+            this.visibilidad = parms.visibilidad();
+        if(parms.numero_de_items() != null)
+            this.numero_de_items = parms.numero_de_items();
+    }
 }
