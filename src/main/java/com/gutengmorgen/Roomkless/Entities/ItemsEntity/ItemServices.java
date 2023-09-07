@@ -25,7 +25,8 @@ public class ItemServices {
         Optional<Categoria> optional = categoriaRepository.findById(parms.categoria_id());
 
         if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            String errorMessage = "Categoria not found with ID: " + parms.categoria_id();
+            return ResponseEntity.notFound().header("message", errorMessage).build();
         } else {
             item.setCategoria(optional.get());
             return ResponseEntity.ok(new DtoResultItem(itemRepository.save(item)));
@@ -38,7 +39,8 @@ public class ItemServices {
         else{
             Optional<Categoria> optional = categoriaRepository.findById(parms.categoria_id());
             if(optional.isEmpty()){
-                return ResponseEntity.notFound().build();
+                String errorMessage = "Categoria not found with ID: " + parms.categoria_id();
+                return ResponseEntity.notFound().header("message", errorMessage).build();
             }
             else{
                 item.actualizar(parms, optional.get());

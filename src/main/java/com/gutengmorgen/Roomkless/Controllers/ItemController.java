@@ -1,9 +1,7 @@
 package com.gutengmorgen.Roomkless.Controllers;
 
-import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.Categoria;
 import com.gutengmorgen.Roomkless.Entities.ItemsEntity.*;
 import com.gutengmorgen.Roomkless.Repository.ItemRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +38,10 @@ public class ItemController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<DtoResultItem> getIdItem(@PathVariable Long id){
         Item item = repository.findById(id).orElse(null);
-        if(item == null) return ResponseEntity.notFound().build();
+        if(item == null) {
+            String errorMessage = "Item not found with ID: " + id;
+            return ResponseEntity.notFound().header("message", errorMessage).build();
+        }
 
         return ResponseEntity.ok(new DtoResultItem(item));
     }
@@ -54,29 +55,24 @@ public class ItemController {
     @PutMapping(path = "/{id}")
     public ResponseEntity<DtoResultItem> updateItem(@PathVariable Long id, @Valid @RequestBody DtoModificarItem parms){
         Item item = repository.findById(id).orElse(null);
-        if(item == null) return ResponseEntity.notFound().build();
+        if(item == null) {
+            String errorMessage = "Item not found with ID: " + id;
+            return ResponseEntity.notFound().header("message", errorMessage).build();
+        }
 
-//        if(parms.categoria_id() == null){
-//            item.actualizar(parms);
-//            repository.save(item);
-//
-//            return ResponseEntity.ok(new DtoResultItem(item));
-//        }
-//        else{
-//            return services.updateItem(item, parms);
-//        }
-//        item.actualizar(parms);
-//        repository.save(item);
+
         return services.updateItem(item, parms);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Item> deleteItem(@PathVariable Long id){
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id){
         Item item = repository.findById(id).orElse(null);
-        if(item == null) return ResponseEntity.notFound().build();
+        if(item == null) {
+            String errorMessage = "Item not found with ID: " + id;
+            return ResponseEntity.notFound().header("message", errorMessage).build();
+        }
 
         repository.delete(item);
-
         return ResponseEntity.noContent().build();
     }
 }
