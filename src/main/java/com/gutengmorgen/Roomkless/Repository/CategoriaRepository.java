@@ -2,11 +2,9 @@ package com.gutengmorgen.Roomkless.Repository;
 
 import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-@Repository
+//@NonNullApi
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+//    @Override
+//    Page<Categoria> findAll(Pageable page);
 }

@@ -1,13 +1,12 @@
 package com.gutengmorgen.Roomkless.Entities.CategoriaEntity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.gutengmorgen.Roomkless.Entities.ItemsEntity.Item;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class Categoria {
     private Long numero_de_items = 0L;
 
     @OneToMany(mappedBy = "categoria_pw")
+    @JsonManagedReference
     private List<Item> items;
 
     public Categoria(DtoCrearCategoria parms) {

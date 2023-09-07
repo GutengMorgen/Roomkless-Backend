@@ -5,10 +5,12 @@ import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.DtoCrearCategoria;
 import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.DtoModificarCategoria;
 import com.gutengmorgen.Roomkless.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/roomkless/categoria")
@@ -27,11 +29,13 @@ public class CategoriaController {
 
     /**
      * Get all list of all reports
+     * @param page paginacion
      * @return a list of all reports
      */
     @GetMapping(path = "/list")
-    public List<Categoria> getAllList(){
-        return repository.findAll();
+    public ResponseEntity<Page<Categoria>> getAllList(@PageableDefault(size = 1) Pageable page){
+//        return repository.findAll();
+        return ResponseEntity.ok(repository.findAll(page));
     }
 
     /**
@@ -46,7 +50,7 @@ public class CategoriaController {
 
     /**
      * Update a report of a categori using ID
-     * @param id
+     * @param id ide de la categoria
      * @param parms DTO of a report
      * @return a ResponeEntity of the update Category
      */
@@ -63,7 +67,7 @@ public class CategoriaController {
 
     /**
      * Delete a category using the ID
-     * @param id
+     * @param id id de la categoria
      * @return a ResponseEntity with noContent
      */
     @DeleteMapping(path = "/{id}")
@@ -78,7 +82,7 @@ public class CategoriaController {
 
     /**
      * Get report of a category using ID
-     * @param id
+     * @param id id de la categoria
      * @return a ResponseEntity of a Category
      */
     @GetMapping(path = "/{id}")
