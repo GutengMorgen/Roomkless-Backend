@@ -6,41 +6,46 @@ import com.gutengmorgen.Roomkless.Repository.ItemRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
 public class ItemServices {
 
-    private final CategoriaRepository repository;
+    private final CategoriaRepository categoriaRepository;
+    private final ItemRepository itemRepository;
 
-    public ItemServices(CategoriaRepository repository) {
-        this.repository = repository;
+    public ItemServices(CategoriaRepository categoriaRepository, ItemRepository itemRepository) {
+        this.categoriaRepository = categoriaRepository;
+        this.itemRepository = itemRepository;
     }
 
-    public Item saveItem(DtoCrearItem parms){
+//    @Transactional
+    public ResponseEntity<DtoResultItem> saveItem(DtoCrearItem parms){
         Item item = new Item(parms);
-        Optional<Categoria> optional = repository.findById(parms.categoria_id());
-        if (optional.isPresent()) {
-            item.setCategoria(optional.get());
-            return item;
+        Optional<Categoria> optional = categoriaRepository.findById(parms.categoria_id());
+
+        if (optional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         } else {
-            return null;
+            item.setCategoria(optional.get());
+            return ResponseEntity.ok(new DtoResultItem(itemRepository.save(item)));
         }
     }
 
-    public ResponseEntity<DtoResultItem> updateItem(ItemRepository irepository, Item item, DtoModificarItem parms){
-//        Item item = new Item();
-
-        Optional<Categoria> optional = repository.findById(parms.categoria_id());
-        if(optional.isPresent()){
-            item.setCategoria(optional.get());
-            item.actualizar(parms);
-            irepository.save(item);
-            return ResponseEntity.ok(new DtoResultItem(item));
-        }
+    public ResponseEntity<DtoResultItem> updateItem(Item item, DtoModificarItem parms){
+        if(parms.categoria_id() == null)
+            item.actualizar(parms, null);
         else{
-            return ResponseEntity.notFound().build();
+            Optional<Categoria> optional = categoriaRepository.findById(parms.categoria_id());
+            if(optional.isEmpty()){
+                return ResponseEntity.notFound().build();
+            }
+            else{
+                item.actualizar(parms, optional.get());
+            }
         }
+
+        itemRepository.save(item);
+        return ResponseEntity.ok(new DtoResultItem(item));
     }
 }

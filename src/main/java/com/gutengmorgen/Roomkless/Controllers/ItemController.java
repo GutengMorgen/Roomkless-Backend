@@ -38,23 +38,17 @@ public class ItemController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Item> getIdItem(@PathVariable Long id){
+    public ResponseEntity<DtoResultItem> getIdItem(@PathVariable Long id){
         Item item = repository.findById(id).orElse(null);
         if(item == null) return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(item);
+        return ResponseEntity.ok(new DtoResultItem(item));
     }
 
     @PostMapping(path = "/create")
-//    @Transactional
-    public ResponseEntity<Item> createItem(@Valid @RequestBody DtoCrearItem parms){
+    public ResponseEntity<DtoResultItem> createItem(@Valid @RequestBody DtoCrearItem parms){
 //        return repository.save(new Item(parms));
-        Item item = services.saveItem(parms);
-
-        if(item != null)
-            return ResponseEntity.ok(repository.save(item));
-        else
-            return ResponseEntity.notFound().build();
+        return services.saveItem(parms);
     }
 
     @PutMapping(path = "/{id}")
@@ -62,15 +56,18 @@ public class ItemController {
         Item item = repository.findById(id).orElse(null);
         if(item == null) return ResponseEntity.notFound().build();
 
-        if(parms.categoria_id() == null){
-            item.actualizar(parms);
-            repository.save(item);
-
-            return ResponseEntity.ok(new DtoResultItem(item));
-        }
-        else{
-            return services.updateItem(repository, item, parms);
-        }
+//        if(parms.categoria_id() == null){
+//            item.actualizar(parms);
+//            repository.save(item);
+//
+//            return ResponseEntity.ok(new DtoResultItem(item));
+//        }
+//        else{
+//            return services.updateItem(item, parms);
+//        }
+//        item.actualizar(parms);
+//        repository.save(item);
+        return services.updateItem(item, parms);
     }
 
     @DeleteMapping(path = "/{id}")

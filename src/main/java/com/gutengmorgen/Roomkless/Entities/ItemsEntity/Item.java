@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Entity
 @Table(name = "items")
@@ -46,7 +47,7 @@ public class Item {
      this.ultima_visita = parms.ultima_visita();
     }
 
-    public void actualizar(DtoModificarItem parms){
+    public void actualizar(DtoModificarItem parms, Categoria categoria){
         if(parms.nombre() != null)
             this.nombre = parms.nombre();
         if(parms.link() != null)
@@ -63,5 +64,8 @@ public class Item {
             this.visitas = parms.visitas();
         if(parms.ultima_visita() != null)
             this.ultima_visita = parms.ultima_visita();
+        if(parms.categoria_id() != null){
+            this.categoria = categoria;
+        }
     }
 }
