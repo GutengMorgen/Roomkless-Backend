@@ -26,3 +26,15 @@ Esto es una API para el projecto Roomkless
   - table
 - creo que tambien debo crear una nueva tabla(usuario) en sql para guardar
     como se ve la pagina
+
+- mostrar las categorias con items, paginacion de categorias
+  - roomkless/consulta?page=0&size=1
+    - original=true : sin filtrar parametros
+    - original=false : filtra parametros
+    - items=true : incluye lista de items
+    - items=false : no incluye lista de items
+
+- mostrar una categoria
+  - roomkless/categoria/{id}
+    - items=true : incluye lista de items, paginacion items
+    - items=false : no incluye lista de items 
