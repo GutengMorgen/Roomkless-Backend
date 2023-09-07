@@ -21,7 +21,7 @@ public record DtoCrearItem(
         @NotBlank
         String etiqueta,
         @NotNull
-        Date ultima_visita
-//        @NotNull
-//        Long categoria_id
+        Date ultima_visita,
+        @NotNull
+        Long categoria_id
 ) { }

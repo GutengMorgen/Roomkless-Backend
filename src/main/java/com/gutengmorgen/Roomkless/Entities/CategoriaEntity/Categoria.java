@@ -25,7 +25,7 @@ public class Categoria {
     private Boolean visibilidad;
     private Long numero_de_items = 0L;
 
-    @OneToMany(mappedBy = "categoria_pw")
+    @OneToMany(mappedBy = "categoria")
     @JsonManagedReference
     private List<Item> items;
 

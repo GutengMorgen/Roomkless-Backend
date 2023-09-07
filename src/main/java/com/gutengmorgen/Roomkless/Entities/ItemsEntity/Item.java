@@ -6,12 +6,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "items")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Item {
@@ -27,12 +29,11 @@ public class Item {
     private String etiqueta;
     private Long visitas = 0L;
     private Date ultima_visita;
-//    private Long categoria_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id")
     @JsonBackReference
-    private Categoria categoria_pw;
+    private Categoria categoria;
 
     public Item(DtoCrearItem parms){
      this.fecha_de_creacion = parms.fecha_de_creacion();
@@ -43,7 +44,6 @@ public class Item {
      this.visibilidad = parms.visibilidad();
      this.etiqueta = parms.etiqueta();
      this.ultima_visita = parms.ultima_visita();
-//     this.categoria_id = parms.categoria_id();
     }
 
     public void actualizar(DtoModificarItem parms){
@@ -63,7 +63,5 @@ public class Item {
             this.visitas = parms.visitas();
         if(parms.ultima_visita() != null)
             this.ultima_visita = parms.ultima_visita();
-//        if(parms.categoria_id() != null)
-//           this.categoria_id = parms.categoria_id();
     }
 }
