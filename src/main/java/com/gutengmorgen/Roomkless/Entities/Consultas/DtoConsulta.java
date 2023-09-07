@@ -1,6 +1,8 @@
 package com.gutengmorgen.Roomkless.Entities.Consultas;
 
 import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.Categoria;
+import com.gutengmorgen.Roomkless.Entities.ItemsEntity.Item;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,5 +36,15 @@ public record DtoConsulta(Long id, String categoria_nombre, Boolean visibilidad,
                 categoria.getNumero_de_items(),
                 List.of());
     }
+
+//    public static Categoria noFilter_PageItems(Categoria categoria){
+//        return new Categoria(
+//                categoria.getId(),
+//                categoria.getFecha_de_creacion(),
+//                categoria.getNombre(),
+//                categoria.getVisibilidad(),
+//                categoria.getNumero_de_items(),
+//                Page.empty());
+//    }
 }
 

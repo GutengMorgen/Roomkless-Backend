@@ -1,11 +1,11 @@
 package com.gutengmorgen.Roomkless.Controllers;
 
-import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.Categoria;
-import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.DtoCrearCategoria;
-import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.DtoModificarCategoria;
+import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.*;
+import com.gutengmorgen.Roomkless.Entities.ItemsEntity.Item;
 import com.gutengmorgen.Roomkless.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class CategoriaController {
 
     private final CategoriaRepository repository;
+    private final CategoriaServices categoriaServices;
 
-    public CategoriaController(CategoriaRepository repository) {
+    public CategoriaController(CategoriaRepository repository, CategoriaServices categoriaServices) {
         this.repository = repository;
+        this.categoriaServices = categoriaServices;
     }
 
     @GetMapping(path = "/count")
@@ -91,5 +93,25 @@ public class CategoriaController {
         if(categoria == null) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(categoria);
+    }
+
+    @GetMapping(path = "/{id}/items")
+    public ResponseEntity<DtoCategriaTesting> getItemsByCategory(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size){
+
+        Categoria categoria = repository.findById(id).orElse(null);
+        if(categoria == null) return ResponseEntity.notFound().build();
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Item> itemPage = categoriaServices.pageItems(categoria, pageable);
+
+        DtoCategriaTesting dtoCategriaTesting = new DtoCategriaTesting(categoria.getId(),
+                categoria.getNombre(),
+                categoria.getVisibilidad(),
+                itemPage);
+
+        return ResponseEntity.ok(dtoCategriaTesting);
     }
 }
