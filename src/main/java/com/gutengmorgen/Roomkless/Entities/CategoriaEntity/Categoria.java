@@ -1,12 +1,15 @@
 package com.gutengmorgen.Roomkless.Entities.CategoriaEntity;
 
+import com.gutengmorgen.Roomkless.Entities.ItemsEntity.Item;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -14,7 +17,6 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +25,9 @@ public class Categoria {
     private String nombre;
     private Boolean visibilidad;
     private Long numero_de_items = 0L;
+
+    @OneToMany(mappedBy = "categoria_pw")
+    private List<Item> items;
 
     public Categoria(DtoCrearCategoria parms) {
         this.fecha_de_creacion = parms.fecha_de_creacion();

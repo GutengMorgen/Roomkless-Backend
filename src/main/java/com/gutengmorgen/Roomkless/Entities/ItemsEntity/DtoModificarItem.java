@@ -10,5 +10,6 @@ public record DtoModificarItem(
         Boolean visibilidad,
         String etiqueta,
         Long visitas,
-        Date ultima_visita,
-        Long categoria_id) { }
+        Date ultima_visita
+//        Long categoria_id
+) { }
