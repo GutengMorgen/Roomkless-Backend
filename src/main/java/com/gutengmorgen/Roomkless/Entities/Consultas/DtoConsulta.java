@@ -1,20 +1,20 @@
 package com.gutengmorgen.Roomkless.Entities.Consultas;
 
 import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.Categoria;
-import com.gutengmorgen.Roomkless.Entities.ItemsEntity.Item;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public record DtoConsulta(Long id, String categoria_nombre, Boolean visibilidad, List<DtoConsultaItem> items) {
+public record DtoConsulta(Long id, String nombre, Boolean visibilidad, List<DtoConsultaItem> items) {
 
     public static DtoConsulta filter(Categoria categoria){
         return new DtoConsulta(
                 categoria.getId(),
                 categoria.getNombre(),
                 categoria.getVisibilidad(),
-                categoria.getItems().stream().map(DtoConsultaItem::new).collect(Collectors.toList())
+                categoria.getItems()
+                        .stream()
+                        .map(DtoConsultaItem::new)
+                        .toList()
         );
     }
 
