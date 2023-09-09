@@ -1,6 +1,7 @@
 package com.gutengmorgen.Roomkless.Controllers;
 
 import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.*;
+import com.gutengmorgen.Roomkless.Entities.Consultas.DtoConsulta;
 import com.gutengmorgen.Roomkless.Entities.ItemsEntity.Item;
 import com.gutengmorgen.Roomkless.Repository.CategoriaRepository;
 import jakarta.validation.Valid;
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class CategoriaController {
 
     private final CategoriaRepository repository;
-    private final CategoriaServices categoriaServices;
+    private final CategoriaServices services;
 
-    public CategoriaController(CategoriaRepository repository, CategoriaServices categoriaServices) {
+    public CategoriaController(CategoriaRepository repository, CategoriaServices services) {
         this.repository = repository;
-        this.categoriaServices = categoriaServices;
+        this.services = services;
     }
 
     @GetMapping(path = "/count")
@@ -95,23 +96,23 @@ public class CategoriaController {
         return ResponseEntity.ok(categoria);
     }
 
+    /**
+     * obtiene una lista de items de una categoria especifica, sin filtros
+     * @param id
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping(path = "/{id}/items")
-    public ResponseEntity<DtoCategriaTesting> getItemsByCategory(
+    public ResponseEntity<Categoria> getItemsByCategory(
             @PathVariable Long id,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size){
+            @RequestParam(defaultValue = "1") int size){
 
         Categoria categoria = repository.findById(id).orElse(null);
         if(categoria == null) return ResponseEntity.notFound().build();
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Item> itemPage = categoriaServices.pageItems(categoria, pageable);
-
-        DtoCategriaTesting dtoCategriaTesting = new DtoCategriaTesting(categoria.getId(),
-                categoria.getNombre(),
-                categoria.getVisibilidad(),
-                itemPage);
-
-        return ResponseEntity.ok(dtoCategriaTesting);
+        return ResponseEntity.ok(DtoConsulta.noFilter_LimitItems(categoria,
+                services.limitItems(categoria, page, size)));
     }
 }

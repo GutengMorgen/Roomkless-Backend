@@ -15,7 +15,6 @@ public class CategoriaServices {
 
     private final ItemRepository itemRepository;
 
-
     public CategoriaServices(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
@@ -24,8 +23,8 @@ public class CategoriaServices {
         return itemRepository.findByCategoria(categoria, pageable);
     }
 
-    public List<DtoConsultaItem> consultaCustomItemList(Categoria categoria){
-        Pageable pageable = PageRequest.of(0, 10);
+    public List<DtoConsultaItem> limitDtoItems(Categoria categoria, int page, int size){
+        Pageable pageable = PageRequest.of(0, 1);
         Page<Item> itemPage = pageItems(categoria, pageable);
 
         return itemPage
@@ -34,8 +33,15 @@ public class CategoriaServices {
                 .toList();
     }
 
-    public List<Item> consultaItemList(Categoria categoria){
-        Pageable pageable = PageRequest.of(0, 10);
+    public List<Item> limitItems(Categoria categoria){
+        Pageable pageable = PageRequest.of(0, 1);
+        Page<Item> itemPage = pageItems(categoria, pageable);
+
+        return itemPage.getContent();
+    }
+
+    public List<Item> limitItems(Categoria categoria, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
         Page<Item> itemPage = pageItems(categoria, pageable);
 
         return itemPage.getContent();

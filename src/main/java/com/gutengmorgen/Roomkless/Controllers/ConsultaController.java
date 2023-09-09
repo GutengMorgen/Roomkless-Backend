@@ -1,8 +1,6 @@
 package com.gutengmorgen.Roomkless.Controllers;
 
-import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.Categoria;
 import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.CategoriaServices;
-import com.gutengmorgen.Roomkless.Entities.CategoriaEntity.DtoCatItemTesting;
 import com.gutengmorgen.Roomkless.Entities.Consultas.DtoConsulta;
 import com.gutengmorgen.Roomkless.Repository.CategoriaRepository;
 import org.springframework.data.domain.Page;
@@ -31,42 +29,28 @@ public class ConsultaController {
     public ResponseEntity<Page<?>> getAllList(
             @RequestParam(name = "filter") boolean filter,
             @RequestParam(name = "items", required = false, defaultValue = "false") boolean items,
-//            @RequestParam(name = "sizeItems", required = false, defaultValue = "1") int sizeItems,
+            @RequestParam(name = "sizeItems", required = false, defaultValue = "1") int sizeItems,
             @PageableDefault(size = 1) Pageable page){
 
         Page<?> resultPage;
 
         if(filter & items){
             //categorias con filtro, items con filtro
-            resultPage = repository.findAll(page).map(categoria -> {
-
-                return new DtoCatItemTesting(
-                        categoria.getId(),
-                        categoria.getNombre(),
-                        categoria.getVisibilidad(),
-                        services.consultaCustomItemList(categoria));
-            });
+            resultPage = repository.findAll(page).map(c ->
+                    DtoConsulta.filter_LimitItems(c, services.limitDtoItems(c, 0, sizeItems)));
         }
         else if(!filter & !items){
-            //categorias sin filtro
+            //categorias sin filtro, sin items
             resultPage = repository.findAll(page).map(DtoConsulta::noFilter_noItems);
         }
         else if(filter & !items){
-            //categorias con filtro
+            //categorias con filtro, sin items
             resultPage = repository.findAll(page).map(DtoConsulta::filter_noItems);
         }
         else {
             //categorias sin filtro, items sin filtro
-            resultPage = repository.findAll(page).map(categoria -> {
-                return new Categoria(
-                        categoria.getId(),
-                        categoria.getFecha_de_creacion(),
-                        categoria.getNombre(),
-                        categoria.getVisibilidad(),
-                        categoria.getNumero_de_items(),
-                        services.consultaItemList(categoria)
-                );
-            });
+            resultPage = repository.findAll(page).map(c ->
+                    DtoConsulta.noFilter_LimitItems(c, services.limitItems(c, 0, sizeItems)));
         }
 
         return ResponseEntity.ok(resultPage);
