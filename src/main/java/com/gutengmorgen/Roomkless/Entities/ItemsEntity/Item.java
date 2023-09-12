@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Entity
 @Table(name = "items")
@@ -36,35 +35,35 @@ public class Item {
     @JsonBackReference
     private Categoria categoria;
 
-    public Item(DtoCrearItem parms){
-     this.fecha_de_creacion = parms.fecha_de_creacion();
-     this.nombre = parms.nombre();
-     this.link = parms.link();
-     this.link_status = parms.link_status();
-     this.descripcion = parms.descripcion();
-     this.visibilidad = parms.visibilidad();
-     this.etiqueta = parms.etiqueta();
-     this.ultima_visita = parms.ultima_visita();
+    public Item(DtoCrearItem parms) {
+        this.fecha_de_creacion = parms.fecha_de_creacion();
+        this.nombre = parms.nombre();
+        this.link = parms.link();
+        this.link_status = parms.link_status();
+        this.descripcion = parms.descripcion();
+        this.visibilidad = parms.visibilidad();
+        this.etiqueta = parms.etiqueta();
+        this.ultima_visita = parms.ultima_visita();
     }
 
-    public void actualizar(DtoModificarItem parms, Categoria categoria){
-        if(parms.nombre() != null)
+    public void actualizar(DtoModificarItem parms, Categoria categoria) {
+        if (parms.nombre() != null)
             this.nombre = parms.nombre();
-        if(parms.link() != null)
+        if (parms.link() != null)
             this.link = parms.link();
-        if(parms.link_status() != null)
+        if (parms.link_status() != null)
             this.link_status = parms.link_status();
-        if(parms.descripcion() != null)
+        if (parms.descripcion() != null)
             this.descripcion = parms.descripcion();
-        if(parms.visibilidad() != null)
+        if (parms.visibilidad() != null)
             this.visibilidad = parms.visibilidad();
-        if(parms.etiqueta() != null)
+        if (parms.etiqueta() != null)
             this.etiqueta = parms.etiqueta();
-        if(parms.visitas() != null)
+        if (parms.visitas() != null)
             this.visitas = parms.visitas();
-        if(parms.ultima_visita() != null)
+        if (parms.ultima_visita() != null)
             this.ultima_visita = parms.ultima_visita();
-        if(parms.categoria_id() != null){
+        if (parms.categoria_id() != null) {
             this.categoria = categoria;
         }
     }

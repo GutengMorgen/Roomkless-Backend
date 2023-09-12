@@ -46,5 +46,9 @@ public record DtoConsulta(Long id, String nombre, Boolean visibilidad, List<?> i
                 items
         );
     }
+
+    public static List<Item> testingitems(Categoria c, List<Item> items){
+        return items;
+    }
 }
 

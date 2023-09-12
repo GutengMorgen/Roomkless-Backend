@@ -9,10 +9,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-
 @RestController
 @RequestMapping(path = "/roomkless/item")
 public class ItemController {
@@ -25,20 +21,20 @@ public class ItemController {
     }
 
     @GetMapping(path = "/count")
-    public Long countAllItems(){
+    public Long countAllItems() {
         return repository.count();
     }
 
     @GetMapping(path = "/list")
-    public ResponseEntity<Page<DtoResultItem>> getList(@PageableDefault(size = 2) Pageable page){
-//        return repository.findAll();
+    public ResponseEntity<Page<DtoResultItem>> getList(@PageableDefault(size = 2) Pageable page) {
+        // return repository.findAll();
         return ResponseEntity.ok(repository.findAll(page).map(DtoResultItem::new));
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<DtoResultItem> getIdItem(@PathVariable Long id){
+    public ResponseEntity<DtoResultItem> getIdItem(@PathVariable Long id) {
         Item item = repository.findById(id).orElse(null);
-        if(item == null) {
+        if (item == null) {
             String errorMessage = "Item not found with ID: " + id;
             return ResponseEntity.notFound().header("message", errorMessage).build();
         }
@@ -47,27 +43,26 @@ public class ItemController {
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<DtoResultItem> createItem(@Valid @RequestBody DtoCrearItem parms){
-//        return repository.save(new Item(parms));
+    public ResponseEntity<DtoResultItem> createItem(@Valid @RequestBody DtoCrearItem parms) {
+        // return repository.save(new Item(parms));
         return services.saveItem(parms);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<DtoResultItem> updateItem(@PathVariable Long id, @Valid @RequestBody DtoModificarItem parms){
+    public ResponseEntity<DtoResultItem> updateItem(@PathVariable Long id, @Valid @RequestBody DtoModificarItem parms) {
         Item item = repository.findById(id).orElse(null);
-        if(item == null) {
+        if (item == null) {
             String errorMessage = "Item not found with ID: " + id;
             return ResponseEntity.notFound().header("message", errorMessage).build();
         }
-
 
         return services.updateItem(item, parms);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable Long id){
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
         Item item = repository.findById(id).orElse(null);
-        if(item == null) {
+        if (item == null) {
             String errorMessage = "Item not found with ID: " + id;
             return ResponseEntity.notFound().header("message", errorMessage).build();
         }
