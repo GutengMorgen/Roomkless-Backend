@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
     Page<Item> findByCategoria(Categoria categoria, Pageable pageable);
+    //findbycategoriaId
+    Page<Item> findByCategoriaId(Long id, Pageable pageable);
 }

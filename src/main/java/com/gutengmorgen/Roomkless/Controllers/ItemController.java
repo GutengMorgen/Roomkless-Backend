@@ -31,6 +31,13 @@ public class ItemController {
         return ResponseEntity.ok(repository.findAll(page).map(DtoResultItem::new));
     }
 
+    @GetMapping(path = "/categorias/{id}")
+    public ResponseEntity<Page<DtoResultItem>> getItemsByCategory(@PathVariable Long id,
+                                                                  @PageableDefault(size = 2) Pageable page) {
+        // return repository.findAll();
+        return ResponseEntity.ok(repository.findByCategoriaId(id, page).map(DtoResultItem::new));
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<DtoResultItem> getIdItem(@PathVariable Long id) {
         Item item = repository.findById(id).orElse(null);
